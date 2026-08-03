@@ -1,0 +1,94 @@
+## .NET / C# ##
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/packages/
+packages/
+!packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# dotnet publish
+[Pp]ublish/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
+[Tt]est[Oo]utput/
+*.trx
+
+## MSTest test infrastructure and results
+[Tt]est[Rr]esult*/
+*.VisualState.xml
+TestResult.xml
+[Tt]est[Oo]utput/
+
+# Docker
+.dockerignore
+
+# Logs
+*.log
+serilog-*.txt
+
+# Sensitive config (never commit these)
+**/appsettings.Production.json
+**/appsettings.Local.json
+**/secrets.json
+**/.env
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# PowerShell temp
+*.ps1.bak
+read_cv.ps1
