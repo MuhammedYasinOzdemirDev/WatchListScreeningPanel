@@ -69,6 +69,11 @@ WatchListScreening.sln
 │   │   │   │   └── IAuditLogService.cs
 │   │   │   └── Messaging/
 │   │   │       └── IMessagePublisher.cs
+│   │   ├── Services/                        # Application (Business) Logic
+│   │   │   ├── SanctionEntryService.cs
+│   │   │   ├── ScreeningService.cs
+│   │   │   ├── AuditLogService.cs
+│   │   │   └── MatchingEngine.cs            # Fuzzy match algoritması
 │   │   ├── DTOs/
 │   │   │   ├── SanctionEntryDto.cs
 │   │   │   ├── ScreeningRequestDto.cs
@@ -90,11 +95,6 @@ WatchListScreening.sln
 │   │   │   │   └── UnitOfWork.cs
 │   │   │   └── Seed/
 │   │   │       └── SeedData.cs
-│   │   ├── Services/
-│   │   │   ├── SanctionEntryService.cs
-│   │   │   ├── ScreeningService.cs
-│   │   │   ├── AuditLogService.cs
-│   │   │   └── MatchingEngine.cs            # Fuzzy match algoritması
 │   │   ├── Caching/
 │   │   │   └── RedisCacheService.cs
 │   │   ├── Messaging/
