@@ -5,6 +5,12 @@ project.lock.json
 .DS_Store
 *.pyc
 
+# Personal / sensitive files
+*.docx
+*.pdf
+cv*.* 
+
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
