@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using WatchListScreening.Infrastructure;
-using WatchListScreening.Infrastructure.Data;
+using WatchListScreening.Application;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -11,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

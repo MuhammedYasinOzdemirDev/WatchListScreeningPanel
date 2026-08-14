@@ -31,7 +31,7 @@ public class ScreeningResultDto
     /// Hangi algoritmayla eşleşti: Exact, Fuzzy, Contains, Phonetic.
     /// Exact match → çok güvenilir. Fuzzy → yazım hatası olabilir, dikkatli bakılmalı.
     /// </summary>
-    public MatchType MatchedType { get; set; }
+    public WatchListScreening.Domain.Enums.MatchType MatchedType { get; set; }
 
     /// <summary>
     /// Otomatik hesaplanan risk seviyesi (MatchScore'a göre).
