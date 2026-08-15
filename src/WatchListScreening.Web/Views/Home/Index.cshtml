@@ -1,8 +1,218 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Genel Bakış (Dashboard)";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row g-4 mb-4">
+    <!-- Card 1 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="custom-card dashboard-stat-card d-flex flex-column justify-content-between h-100">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 14px; background: var(--status-low-bg); color: var(--status-low); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-users fa-xl"></i>
+                </div>
+                <span class="badge" style="background: transparent; color: var(--status-low); font-weight: 600;">Genel</span>
+            </div>
+            <div>
+                <h6 class="text-muted mb-1 fw-semibold" style="letter-spacing: 0.5px; font-size: 0.85rem; text-transform: uppercase;">Toplam Kayıt</h6>
+                <div class="d-flex align-items-end gap-2">
+                    <h2 class="mb-0 fw-bolder" id="stat-total-entries" style="font-size: 2.2rem; color: var(--text-primary); letter-spacing: -1px;">0</h2>
+                    <small class="text-success fw-bold pb-1"><i class="fa-solid fa-arrow-trend-up"></i> %4.2</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="custom-card dashboard-stat-card d-flex flex-column justify-content-between h-100">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 14px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                </div>
+                <span class="badge" style="background: transparent; color: var(--accent); font-weight: 600;">Bugün</span>
+            </div>
+            <div>
+                <h6 class="text-muted mb-1 fw-semibold" style="letter-spacing: 0.5px; font-size: 0.85rem; text-transform: uppercase;">Tarama Sayısı</h6>
+                <div class="d-flex align-items-end gap-2">
+                    <h2 class="mb-0 fw-bolder" id="stat-today-screenings" style="font-size: 2.2rem; color: var(--text-primary); letter-spacing: -1px;">0</h2>
+                    <small class="text-success fw-bold pb-1"><i class="fa-solid fa-arrow-trend-up"></i> %12.5</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="custom-card dashboard-stat-card d-flex flex-column justify-content-between h-100">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 14px; background: var(--status-medium-bg); color: var(--status-medium); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-clock-rotate-left fa-xl"></i>
+                </div>
+                <span class="badge" style="background: transparent; color: var(--status-medium); font-weight: 600;">Dikkat</span>
+            </div>
+            <div>
+                <h6 class="text-muted mb-1 fw-semibold" style="letter-spacing: 0.5px; font-size: 0.85rem; text-transform: uppercase;">Bekleyen İnceleme</h6>
+                <div class="d-flex align-items-end gap-2">
+                    <h2 class="mb-0 fw-bolder" id="stat-pending-reviews" style="font-size: 2.2rem; color: var(--text-primary); letter-spacing: -1px;">0</h2>
+                    <small class="text-danger fw-bold pb-1"><i class="fa-solid fa-arrow-trend-up"></i> +2</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="custom-card dashboard-stat-card d-flex flex-column justify-content-between h-100">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 14px; background: var(--status-critical-bg); color: var(--status-critical); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-triangle-exclamation fa-xl"></i>
+                </div>
+                <span class="badge" style="background: transparent; color: var(--status-critical); font-weight: 600;">Risk</span>
+            </div>
+            <div>
+                <h6 class="text-muted mb-1 fw-semibold" style="letter-spacing: 0.5px; font-size: 0.85rem; text-transform: uppercase;">Yüksek Riskli Eşleşme</h6>
+                <div class="d-flex align-items-end gap-2">
+                    <h2 class="mb-0 fw-bolder" id="stat-high-risk" style="font-size: 2.2rem; color: var(--text-primary); letter-spacing: -1px;">0</h2>
+                    <small class="text-danger fw-bold pb-1"><i class="fa-solid fa-arrow-trend-up"></i> +1</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row g-4">
+    <!-- Chart Area -->
+    <div class="col-md-8">
+        <div class="custom-card h-100">
+            <h5 class="mb-4 font-weight-bold" style="color: var(--text-primary);">Tarama Aktivitesi (Son 7 Gün)</h5>
+            <div style="height: 300px; position: relative;">
+                <canvas id="screeningChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="col-md-4">
+        <div class="custom-card h-100 d-flex flex-column">
+            <h5 class="mb-4 font-weight-bold" style="color: var(--text-primary);">Hızlı İşlemler</h5>
+            <div class="d-grid gap-3 flex-grow-1">
+                <a href="@Url.Action("Index", "Screening")" class="btn btn-neon d-flex justify-content-between align-items-center">
+                    <span>Yeni Tarama Başlat</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="@Url.Action("Results", "Screening")" class="btn bg-white d-flex justify-content-between align-items-center" style="border: 1px solid var(--border-color); color: var(--text-primary); transition: all 0.2s;">
+                    <span>Bekleyenleri İncele</span>
+                    <i class="fa-solid fa-list-check" style="color: var(--text-secondary);"></i>
+                </a>
+            </div>
+            <div class="mt-4 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                <small class="text-secondary d-flex justify-content-between align-items-center">
+                    <span>Son Güncelleme:</span>
+                    <span id="last-updated-time">--:--:--</span>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            
+            // 1. Chart.js Kurulumu (Light Mode)
+            const ctx = document.getElementById('screeningChart').getContext('2d');
+            
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');   
+            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
+            const screeningChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                    datasets: [{
+                        label: 'Tarama Sayısı',
+                        data: [12, 19, 15, 25, 22, 10, 30], 
+                        borderColor: '#2563eb',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#2563eb',
+                        pointBorderWidth: 2,
+                        pointHoverBorderWidth: 3,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+                            ticks: { color: '#64748b' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+                            ticks: { color: '#64748b' },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // CountUp Instance'ları
+            let countUpTotal, countUpToday, countUpPending, countUpRisk;
+            const countUpOptions = { duration: 2.5, separator: '.' };
+
+            // 2. İstatistikleri API'den Çekme
+            function fetchStats() {
+                $.ajax({
+                    url: `${API_BASE_URL}/results/stats`,
+                    type: 'GET',
+                    success: function (res) {
+                        if(res && res.data) {
+                            
+                            // Initialize veya Update CountUp
+                            if(!countUpTotal) {
+                                countUpTotal = new countUp.CountUp('stat-total-entries', res.data.totalSanctionEntries, countUpOptions);
+                                countUpToday = new countUp.CountUp('stat-today-screenings', res.data.todayScreenings, countUpOptions);
+                                countUpPending = new countUp.CountUp('stat-pending-reviews', res.data.pendingReviews, countUpOptions);
+                                countUpRisk = new countUp.CountUp('stat-high-risk', res.data.highRiskMatches, countUpOptions);
+                                
+                                countUpTotal.start();
+                                countUpToday.start();
+                                countUpPending.start();
+                                countUpRisk.start();
+                            } else {
+                                countUpTotal.update(res.data.totalSanctionEntries);
+                                countUpToday.update(res.data.todayScreenings);
+                                countUpPending.update(res.data.pendingReviews);
+                                countUpRisk.update(res.data.highRiskMatches);
+                            }
+                            
+                            // Son Güncelleme Saati
+                            const d = new Date();
+                            $('#last-updated-time').text(d.toLocaleTimeString());
+                        }
+                    },
+                    error: function () {
+                        toastr.error("API ile iletişim kurulamadı.", "Hata");
+                    }
+                });
+            }
+
+            // Sayfa yüklendiğinde ilk çağrı
+            fetchStats();
+
+            // 30 saniyede bir auto-refresh
+            setInterval(fetchStats, 30000);
+        });
+    </script>
+}

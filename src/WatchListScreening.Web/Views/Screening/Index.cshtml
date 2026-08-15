@@ -1,0 +1,187 @@
+@{
+    ViewData["Title"] = "İsim Taraması (Screening)";
+}
+
+<div class="row justify-content-center mt-5 pt-3">
+    <div class="col-md-8 text-center mb-5">
+        <h2 class="mb-4">Kimi veya hangi kurumu taramak istiyorsunuz?</h2>
+        
+        <!-- Search Form -->
+        <div class="search-container" style="max-width: 750px; margin: 0 auto 4rem auto;">
+            <form id="screening-form">
+                <div class="search-input-group" style="display: flex; align-items: center; background: var(--bg-card); border-radius: 99px; padding: 0.6rem 0.6rem 0.6rem 1.5rem; box-shadow: 0 15px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 20px 50px -10px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.02)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 15px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)';">
+                    <i class="fa-solid fa-magnifying-glass text-secondary fa-lg"></i>
+                    <input type="text" id="search-query" placeholder="İsim veya firma adı yazın (Örn: John Smith, Apple Inc...)" required autocomplete="off" style="background: transparent; border: none; color: var(--text-primary); font-size: 1.15rem; font-weight: 500; padding: 0.75rem 1rem; width: 100%; outline: none;" />
+                    
+                    <div style="height: 30px; width: 2px; background: var(--border-color); margin: 0 0.75rem;"></div>
+                    
+                    <select id="entity-type" class="form-select border-0 fw-semibold" style="width: auto; min-width:110px; background: transparent; color: var(--text-secondary); box-shadow: none; cursor: pointer; padding-left: 0.5rem; outline: none;">
+                        <option value="1">Kişi</option>
+                        <option value="2">Kurum</option>
+                    </select>
+                    
+                    <button type="submit" class="btn btn-neon ms-2" id="btn-scan" style="border-radius: 99px; padding: 0.8rem 2rem; font-size: 1.05rem; white-space: nowrap;">
+                        Taramayı Başlat
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Spinner -->
+<div class="text-center d-none" id="loading-spinner">
+    <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <h5 class="mt-3 text-secondary">Veritabanı taranıyor...</h5>
+</div>
+
+<!-- Results Section -->
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div id="results-container">
+            <!-- AJAX Results Will Be Injected Here -->
+        </div>
+    </div>
+</div>
+
+<!-- Template for Result Card (Hidden) -->
+<template id="result-card-template">
+    <div class="custom-card mb-3 result-card" style="display: none; border-left: 4px solid var(--accent);">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1 d-flex align-items-center gap-2">
+                    <span class="matched-name">John Doe</span>
+                    <i class="fa-solid fa-circle-check text-neon-green match-icon"></i>
+                </h4>
+                <div class="text-secondary small mt-2">
+                    <span class="me-3"><i class="fa-solid fa-database"></i> Kaynak: <strong class="list-source text-white">OFAC</strong></span>
+                    <span class="me-3"><i class="fa-solid fa-code-compare"></i> Eşleşme Türü: <strong class="match-type text-white">Fuzzy</strong></span>
+                </div>
+            </div>
+            
+            <div class="text-end">
+                <div class="d-flex flex-column align-items-end">
+                    <span class="badge risk-badge mb-2">High Risk</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <small class="text-secondary">Benzerlik:</small>
+                        <h3 class="mb-0 match-score" style="color: var(--accent);">95%</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            
+            $('#screening-form').on('submit', function (e) {
+                e.preventDefault();
+                
+                const query = $('#search-query').val().trim();
+                const entityType = parseInt($('#entity-type').val());
+                
+                if (!query) return;
+
+                // UI Update for Loading
+                $('#results-container').empty();
+                $('#loading-spinner').removeClass('d-none');
+                
+                const $btnScan = $('#btn-scan');
+                const originalBtnText = $btnScan.html();
+                $btnScan.prop('disabled', true).html('<i class="fa-solid fa-circle-notch fa-spin"></i> Taranıyor...');
+
+                // Prepare API request payload
+                const requestData = {
+                    searchQuery: query,
+                    searchType: entityType,
+                    requestedBy: "Admin User"
+                };
+
+                // AJAX Call
+                $.ajax({
+                    url: `${API_BASE_URL}/screening`,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    success: function (res) {
+                        $('#loading-spinner').addClass('d-none');
+                        $btnScan.prop('disabled', false).html(originalBtnText);
+                        
+                        if(res && res.data && res.data.matches && res.data.matches.length > 0) {
+                            toastr.warning(`${res.data.matches.length} eşleşme bulundu!`, "Uyarı");
+                            renderResults(res.data.matches);
+                        } else {
+                            toastr.success("Veritabanında şüpheli bir eşleşme bulunamadı.", "Temiz");
+                            renderNoResults();
+                        }
+                    },
+                    error: function (xhr) {
+                        $('#loading-spinner').addClass('d-none');
+                        $btnScan.prop('disabled', false).html(originalBtnText);
+                        toastr.error("Tarama sırasında bir hata oluştu.", "Hata");
+                    }
+                });
+            });
+
+            function renderNoResults() {
+                const noResultHtml = `
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="fa-regular fa-circle-check fa-4x text-neon-green"></i>
+                        </div>
+                        <h4>Eşleşme Bulunmadı</h4>
+                        <p class="text-secondary">Aradığınız kişi/kurum mevcut yaptırım listelerinde yer almıyor.</p>
+                    </div>
+                `;
+                $('#results-container').html(noResultHtml);
+            }
+
+            function renderResults(matches) {
+                const template = document.getElementById('result-card-template');
+                let delay = 0; // Staggered animation delay
+                
+                matches.forEach(match => {
+                    const clone = template.content.cloneNode(true);
+                    const card = clone.querySelector('.result-card');
+                    
+                    // Risk Level Renklendirme ve Badge
+                    const riskBadge = clone.querySelector('.risk-badge');
+                    let borderLeftColor = '';
+                    
+                    if (match.riskLevel === 1) { 
+                        riskBadge.textContent = 'Low Risk'; riskBadge.className += ' risk-low'; borderLeftColor = 'var(--neon-green)';
+                    } else if (match.riskLevel === 2) { 
+                        riskBadge.textContent = 'Medium Risk'; riskBadge.className += ' risk-medium'; borderLeftColor = 'var(--neon-amber)';
+                    } else if (match.riskLevel === 3) { 
+                        riskBadge.textContent = 'High Risk'; riskBadge.className += ' risk-high'; borderLeftColor = 'var(--neon-orange)';
+                    } else if (match.riskLevel === 4) { 
+                        riskBadge.textContent = 'Critical Risk'; riskBadge.className += ' risk-critical'; borderLeftColor = 'var(--neon-red)';
+                    }
+                    
+                    card.style.borderLeftColor = borderLeftColor;
+                    
+                    // Veri Doldurma
+                    clone.querySelector('.matched-name').textContent = match.matchedFullName;
+                    clone.querySelector('.list-source').textContent = match.matchedListSource;
+                    
+                    // Enum map for Match Type (1=Exact, 2=Contains, 3=Fuzzy)
+                    let matchTypeName = match.matchedType === 1 ? "Exact Match" : (match.matchedType === 2 ? "Partial Match" : "Fuzzy Match");
+                    clone.querySelector('.match-type').textContent = matchTypeName;
+                    
+                    clone.querySelector('.match-score').textContent = match.matchScore.toFixed(1) + '%';
+                    clone.querySelector('.match-score').style.color = borderLeftColor;
+
+                    // Animasyon için jQuery kullanımı
+                    $('#results-container').append(clone);
+                    
+                    $('#results-container').find('.result-card:last').delay(delay).fadeIn(400);
+                    delay += 150; // Her kart 150ms arayla çıksın
+                });
+            }
+        });
+    </script>
+}

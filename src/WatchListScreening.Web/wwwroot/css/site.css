@@ -1,31 +1,438 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* ==========================================================================
+   1. VARIABLES & THEME SETUP (PREMIUM LIGHT MODE)
+   ========================================================================== */
+:root {
+    /* Backgrounds */
+    --bg-main: #f8fafc; /* Slate 50 */
+    --bg-card: #ffffff; /* Pure White */
+    
+    /* Borders */
+    --border-color: #e2e8f0; /* Slate 200 */
+    
+    /* Typography */
+    --text-primary: #0f172a; /* Slate 900 */
+    --text-secondary: #64748b; /* Slate 500 */
+    
+    /* Accents (Apple / Stripe Blue) */
+    --accent: #2563eb; /* Blue 600 */
+    --accent-hover: #1d4ed8; /* Blue 700 */
+    --accent-light: #eff6ff; /* Blue 50 */
+    
+    /* Status Colors */
+    --status-low: #059669; /* Emerald 600 */
+    --status-low-bg: #d1fae5; /* Emerald 100 */
+    
+    --status-medium: #d97706; /* Amber 600 */
+    --status-medium-bg: #fef3c7; /* Amber 100 */
+    
+    --status-high: #ea580c; /* Orange 600 */
+    --status-high-bg: #ffedd5; /* Orange 100 */
+    
+    --status-critical: #e11d48; /* Rose 600 */
+    --status-critical-bg: #ffe4e6; /* Rose 100 */
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-apple: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    /* Soft Mesh Gradient Background */
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+    background-attachment: fixed;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* ==========================================================================
+   2. LAYOUT (Sidebar & Main Content)
+   ========================================================================== */
+.app-container {
+    display: flex;
+    min-height: 100vh;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar-brand {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.text-neon-green { color: var(--accent) !important; }
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.sidebar-nav .nav-link i {
+    width: 18px;
+    text-align: center;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: var(--bg-main);
+    color: var(--text-primary);
+}
+
+.sidebar-nav .nav-link:hover i {
+    transform: scale(1.1);
+}
+
+.sidebar-nav .nav-link.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.main-wrapper {
+    flex: 1;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+}
+
+.top-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.page-title {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #60a5fa);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.content-body {
+    padding: 2.5rem 2rem;
+    flex: 1;
+}
+
+/* ==========================================================================
+   3. COMPONENTS (Cards, Buttons, Inputs)
+   ========================================================================== */
+.custom-card {
+    background: var(--bg-card);
+    border: none;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Dynamic Button */
+.btn-neon {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
+    position: relative;
+}
+
+.btn-neon:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.btn-neon:active {
+    transform: scale(0.98);
+}
+
+/* Forms */
+.form-control.dark-input, .form-select.dark-input {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-control.dark-input:focus, .form-select.dark-input:focus {
+    background-color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    color: var(--text-primary);
+    outline: none;
+}
+
+/* Status Badges */
+.badge-risk, .badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    border: none;
+}
+.risk-low { background-color: var(--status-low-bg); color: var(--status-low); }
+.risk-medium { background-color: var(--status-medium-bg); color: var(--status-medium); }
+.risk-high { background-color: var(--status-high-bg); color: var(--status-high); }
+.risk-critical { background-color: var(--status-critical-bg); color: var(--status-critical); }
+
+/* Table Overrides */
+.table.dark-table {
+    color: var(--text-primary);
+    margin-top: 1rem !important;
+}
+.table.dark-table th {
+    background-color: var(--bg-main);
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 0.75rem;
+}
+.table.dark-table td {
+    border-bottom: 1px solid var(--border-color);
+    background-color: transparent;
+    padding: 1rem 0.75rem;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+.table.dark-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+.table.dark-table tbody tr:hover {
+    background-color: var(--accent-light);
+}
+
+/* Modals */
+.modal-content.glass-modal {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    border-radius: 16px;
+}
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+}
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    background: var(--bg-main);
+    border-radius: 0 0 16px 16px;
+}
+.btn-close {
+    filter: none;
+}
+
+/* Hide Table Actions by Default, Show on Hover */
+.table-action-btns {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.table.dark-table tbody tr:hover .table-action-btns {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   4. COOL UI EFFECTS (Final Polish)
+   ========================================================================== */
+
+/* Gradient Text */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+/* Hover-to-Expand Button */
+.btn-expandable {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 99px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.btn-expandable .btn-text {
+    white-space: nowrap;
+    transition: margin 0.3s ease;
+}
+
+.btn-expandable .btn-icon {
+    opacity: 0;
+    width: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+}
+
+.btn-expandable:hover {
+    padding-right: 1.5rem;
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-expandable:hover .btn-icon {
+    opacity: 1;
+    width: 14px;
+    margin-left: 8px;
+    transform: translateX(0);
+}
+
+/* Table Row Glow Effect */
+.table.dark-table tbody tr {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.table.dark-table tbody tr:hover {
+    background-color: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    box-shadow: inset 0 0 20px rgba(37, 99, 235, 0.05), 0 5px 15px rgba(0,0,0,0.03);
+    transform: scale(1.002);
+    z-index: 10;
+    position: relative;
+}
+
+/* Glassmorphism Action Banner */
+.glass-banner {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 1);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.glass-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent), #8b5cf6, var(--accent));
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.glass-banner:hover {
+    transform: translateY(-2px) scale(1.01);
 }
