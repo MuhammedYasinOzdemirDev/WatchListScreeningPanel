@@ -9,6 +9,9 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<ISanctionEntryService, SanctionEntryService>();
+        services.AddScoped<IScreeningService, ScreeningService>();
+        
+        services.AddSingleton<MatchingEngine>();
 
         return services;
     }
