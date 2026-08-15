@@ -1,4 +1,4 @@
-﻿using WatchListScreening.Application.DTOs;
+using WatchListScreening.Application.DTOs;
 using WatchListScreening.Application.Interfaces.Repositories;
 using WatchListScreening.Application.Interfaces.Services;
 using WatchListScreening.Domain.Entities;
@@ -65,6 +65,24 @@ public class ScreeningService : IScreeningService
         request.TotalMatches = results.Count;
         _unitOfWork.ScreeningRequests.Update(request);
         await _unitOfWork.SaveChangesAsync();
+
+        return MapToDto(request, results);
+    }
+
+    /// <summary>
+    /// Geçmiş bir tarama isteğini ID ile getirir.
+    /// Controller GET /api/screening/{id} için kullanır.
+    /// </summary>
+    public async Task<ScreeningRequestDto?> GetByIdAsync(int id)
+    {
+        var request = await _unitOfWork.ScreeningRequests.GetByIdAsync(id);
+        if (request is null) return null;
+
+        // Results navigation property lazy load edilmez — Query ile çekiyoruz
+        var results = _unitOfWork.ScreeningResults
+            .Query()
+            .Where(r => r.ScreeningRequestId == id)
+            .ToList();
 
         return MapToDto(request, results);
     }
