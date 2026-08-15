@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using WatchListScreening.Application.Interfaces.Services;
 using WatchListScreening.Application.Services;
 
@@ -10,6 +10,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ISanctionEntryService, SanctionEntryService>();
         services.AddScoped<IScreeningService, ScreeningService>();
+        services.AddScoped<IScreeningResultService, ScreeningResultService>();
         
         services.AddSingleton<MatchingEngine>();
 
