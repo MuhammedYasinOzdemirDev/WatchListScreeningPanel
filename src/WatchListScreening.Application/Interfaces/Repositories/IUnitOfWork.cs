@@ -6,7 +6,8 @@ public interface IUnitOfWork: IDisposable
 {
     ISanctionEntryRepository SanctionEntries { get; }
     IRepository<ScreeningRequest> ScreeningRequests { get; }
-    IRepository<ScreeningResult> ScreeningResults { get; }
+    IScreeningResultRepository ScreeningResults { get; }
+
     IRepository<AuditLog> AuditLogs { get; }
     Task<int> SaveChangesAsync();
 }

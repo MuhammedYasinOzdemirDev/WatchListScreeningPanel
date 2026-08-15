@@ -17,7 +17,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<ISanctionEntryRepository, SanctionEntryRepository>();
- 
+        services.AddScoped<IScreeningResultRepository, ScreeningResultRepository>();
+
+
         return services;
     }
 }

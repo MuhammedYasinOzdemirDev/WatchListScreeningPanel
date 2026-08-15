@@ -8,14 +8,17 @@ internal class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     public ISanctionEntryRepository SanctionEntries { get; }
     public IRepository<ScreeningRequest> ScreeningRequests { get; }
-    public IRepository<ScreeningResult> ScreeningResults { get; }
+    public IScreeningResultRepository ScreeningResults { get; }
+
     public IRepository<AuditLog> AuditLogs { get; }
+
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
         SanctionEntries = new SanctionEntryRepository(context);
         ScreeningRequests = new Repository<ScreeningRequest>(context);
-        ScreeningResults = new Repository<ScreeningResult>(context);
+        ScreeningResults = new ScreeningResultRepository(context);
         AuditLogs = new Repository<AuditLog>(context);
     }
     public async Task<int> SaveChangesAsync()
