@@ -1,5 +1,5 @@
-ï»¿using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.Interfaces.Services;
 
 namespace WatchListScreening.API.Controllers;
@@ -12,7 +12,7 @@ public class ResultsController : ControllerBase
 
     public ResultsController(IScreeningResultService service) => _service = service;
 
-    /// <summary>Ä°nceleme bekleyen sonuÃ§lar â€” compliance uzmanÄ±nÄ±n iÅŸ listesi.</summary>
+    /// <summary>İnceleme bekleyen sonuçlar — compliance uzmanının iş listesi.</summary>
     [HttpGet("pending")]
     public async Task<IActionResult> GetPending()
         => Ok(await _service.GetPendingAsync());

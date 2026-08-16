@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.Interfaces.Services;
 
 namespace WatchListScreening.API.Controllers;

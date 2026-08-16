@@ -1,12 +1,12 @@
-ï»¿using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.Interfaces.Services;
 
 namespace WatchListScreening.API.Controllers;
 
 /// <summary>
-/// YaptÄ±rÄ±m listesi tarama endpoint'leri.
-/// Bir isim girer â†’ sistem tÃ¼m listeyle karÅŸÄ±laÅŸtÄ±rÄ±r â†’ eÅŸleÅŸmeleri dÃ¶ner.
+/// Yaptırım listesi tarama endpoint'leri.
+/// Bir isim girer › sistem tüm listeyle karşılaştırır › eşleşmeleri döner.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -20,8 +20,8 @@ public class ScreeningController : ControllerBase
     }
 
     /// <summary>
-    /// Tek isim taramasÄ± baÅŸlatÄ±r ve sonuÃ§larÄ± dÃ¶ner.
-    /// Senkron â€” sonuÃ§ hazÄ±r olana kadar bekler.
+    /// Tek isim taraması başlatır ve sonuçları döner.
+    /// Senkron — sonuç hazır olana kadar bekler.
     /// </summary>
     [HttpPost]
     public async Task<IActionResult> Screen([FromBody] CreateScreeningRequestDto dto)
@@ -31,7 +31,7 @@ public class ScreeningController : ControllerBase
     }
 
     /// <summary>
-    /// GeÃ§miÅŸ bir tarama isteÄŸini ID ile getirir.
+    /// Geçmiş bir tarama isteğini ID ile getirir.
     /// </summary>
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
