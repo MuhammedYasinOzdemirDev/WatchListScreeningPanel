@@ -1,22 +1,22 @@
-ï»¿namespace WatchListScreening.Application.Services;
+namespace WatchListScreening.Application.Services;
 
 /// <summary>
-/// Ä°sim eÅŸleÅŸtirme algoritmalarÄ±.
-/// Strategy Pattern ile her algoritma birbirinden baÄŸÄ±msÄ±z.
+/// İsim eşleştirme algoritmaları.
+/// Strategy Pattern ile her algoritma birbirinden bağımsız.
 /// </summary>
 public class MatchingEngine
 {
     /// <summary>
-    /// Bir input string'i, listedeki tÃ¼m adlara karÅŸÄ± Ã§alÄ±ÅŸtÄ±rÄ±r.
-    /// En yÃ¼ksek skoru dÃ¶ner.
+    /// Bir input string'i, listedeki tüm adlara karşı çalıştırır.
+    /// En yüksek skoru döner.
     /// </summary>
     public MatchResult CalculateBestMatch(string input, string target)
     {
-        // Case-insensitive karÅŸÄ±laÅŸtÄ±rma iÃ§in normalize et
+        // Case-insensitive karşılaştırma için normalize et
         var normalizedInput = input.Trim().ToLowerInvariant();
         var normalizedTarget = target.Trim().ToLowerInvariant();
 
-        // Her algoritmayÄ± dene, en iyisini seÃ§
+        // Her algoritmayı dene, en iyisini seç
         var exactScore = ExactMatch(normalizedInput, normalizedTarget);
         var containsScore = ContainsMatch(normalizedInput, normalizedTarget);
         var fuzzyScore = FuzzyMatch(normalizedInput, normalizedTarget);
@@ -28,22 +28,22 @@ public class MatchingEngine
         return new MatchResult(fuzzyScore, Domain.Enums.MatchType.Fuzzy);
     }
 
-    /// <summary>Tam eÅŸleÅŸme â€” "John Smith" == "John Smith"</summary>
+    /// <summary>Tam eşleşme — "John Smith" == "John Smith"</summary>
     private static decimal ExactMatch(string input, string target)
         => input == target ? 100 : 0;
 
-    /// <summary>Ä°Ã§erik eÅŸleÅŸmesi â€” "John" âŠ‚ "John Alexander Smith"</summary>
+    /// <summary>İçerik eşleşmesi — "John" ? "John Alexander Smith"</summary>
     private static decimal ContainsMatch(string input, string target)
     {
         if (target.Contains(input))
-            // Input ne kadar uzunsa, skor o kadar yÃ¼ksek
+            // Input ne kadar uzunsa, skor o kadar yüksek
             return Math.Round((decimal)input.Length / target.Length * 100, 2);
         return 0;
     }
 
     /// <summary>
-    /// Levenshtein Distance â€” iki string arasÄ±ndaki dÃ¼zenleme mesafesi.
-    /// "Jon" â†’ "John" = 1 ekleme = %75 benzerlik
+    /// Levenshtein Distance — iki string arasındaki düzenleme mesafesi.
+    /// "Jon" › "John" = 1 ekleme = %75 benzerlik
     /// </summary>
     private static decimal FuzzyMatch(string input, string target)
     {
@@ -54,9 +54,9 @@ public class MatchingEngine
     }
 
     /// <summary>
-    /// Levenshtein Distance algoritmasÄ±.
-    /// Bir string'i diÄŸerine Ã§evirmek iÃ§in gereken minimum iÅŸlem sayÄ±sÄ±.
-    /// Ä°ÅŸlemler: ekleme, silme, deÄŸiÅŸtirme.
+    /// Levenshtein Distance algoritması.
+    /// Bir string'i diğerine çevirmek için gereken minimum işlem sayısı.
+    /// İşlemler: ekleme, silme, değiştirme.
     /// </summary>
     private static int LevenshteinDistance(string s, string t)
     {
@@ -80,5 +80,5 @@ public class MatchingEngine
     }
 }
 
-/// <summary>Bir eÅŸleÅŸtirme iÅŸleminin sonucu.</summary>
+/// <summary>Bir eşleştirme işleminin sonucu.</summary>
 public record MatchResult(decimal Score, WatchListScreening.Domain.Enums.MatchType MatchType);
