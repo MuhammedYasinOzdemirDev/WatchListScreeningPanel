@@ -1,7 +1,11 @@
 using WatchListScreening.Infrastructure;
 using WatchListScreening.Application;
 using WatchListScreening.API.Middlewares;
+using WatchListScreening.API.Consumers;
 using Serilog;
+using Hangfire;
+using Hangfire.PostgreSql;
+using MassTransit;
 
 // 1. Serilog Konfigürasyonu
 Log.Logger = new LoggerConfiguration()
@@ -41,6 +45,37 @@ try
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddApplicationServices();
 
+    // 3. Hangfire Konfigürasyonu
+    builder.Services.AddHangfire(config => config
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UsePostgreSqlStorage(c => c.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))));
+        
+    builder.Services.AddHangfireServer(options => {
+        options.WorkerCount = 1; // Sadece Job trigger edecek, ağır iş yapmayacak
+    });
+
+    // 4. MassTransit & RabbitMQ Konfigürasyonu
+    builder.Services.AddMassTransit(x =>
+    {
+        x.AddConsumer<HarvestResultConsumer>();
+
+        x.UsingRabbitMq((context, cfg) =>
+        {
+            cfg.Host(builder.Configuration["RabbitMQ:Host"] ?? "localhost", h =>
+            {
+                h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
+                h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+            });
+
+            cfg.ReceiveEndpoint("harvest-results", e =>
+            {
+                e.ConfigureConsumer<HarvestResultConsumer>(context);
+            });
+        });
+    });
+
     var app = builder.Build();
 
     // 2. Middleware'ler (Pipeline)
@@ -59,6 +94,14 @@ try
     app.UseCors("AllowAll"); // CORS'u aktifleştir
 
     app.UseAuthorization();
+    
+    // Hangfire Dashboard (Production'da authorization eklenmelidir!)
+    app.UseHangfireDashboard("/hangfire", new DashboardOptions
+    {
+        // Ignore auth for dev purposes (In production use IDashboardAuthorizationFilter)
+        Authorization = new [] { new Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter() } 
+    });
+
     app.MapControllers();
 
     app.Run();
