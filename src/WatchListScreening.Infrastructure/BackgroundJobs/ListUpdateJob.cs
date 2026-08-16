@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using WatchListScreening.Application.Interfaces.Repositories;
@@ -46,17 +46,17 @@ public class ListUpdateJob : IJob
             var source = Sources[random.Next(Sources.Length)];
 
             var existing = await unitOfWork.SanctionEntries.SearchByNameAsync(name);
-            if (existing.Any(e => e.ListSource == source && e.IsActive))
+            if (existing.Any(e => e.IsActive))
                 continue;
 
             await unitOfWork.SanctionEntries.AddAsync(new SanctionEntry
             {
-                FullName = name,
-                EntityType = EntityType.Person,
-                ListSource = source,
-                IsActive = true,
-                AddedAt = DateTime.UtcNow,
-                CreatedAt = DateTime.UtcNow
+                FullName     = name,
+                EntityType   = EntityType.Person,
+                // ListSource kaldırıldı — Faz 2'de ListSourceId FK ile yönetilecek
+                IsActive     = true,
+                AddedAt      = DateTime.UtcNow,
+                CreatedAt    = DateTime.UtcNow
             });
             added++;
         }
@@ -73,12 +73,12 @@ public class ListUpdateJob : IJob
 
         await unitOfWork.AuditLogs.AddAsync(new AuditLog
         {
-            Action = "ListUpdate",
-            EntityType = "SanctionEntry",
+            Action      = "ListUpdate",
+            EntityType  = "SanctionEntry",
             PerformedBy = "System",
-            PerformedAt = DateTime.UtcNow,
-            Details = $"{added} yeni kayıt eklendi.",
-            CreatedAt = DateTime.UtcNow
+            // PerformedAt kaldırıldı — BaseEntity.CreatedAt kullanılıyor
+            Details     = $"{added} yeni kayıt eklendi.",
+            CreatedAt   = DateTime.UtcNow
         });
         await unitOfWork.SaveChangesAsync();
 

@@ -53,13 +53,13 @@ public class SanctionEntryService : ISanctionEntryService
     {
         var entry = new SanctionEntry
         {
-            FullName   = dto.FullName,
-            EntityType = dto.EntityType,
-            Country    = dto.Country,
-            ListSource = dto.ListSource,
-            IsActive   = true,
-            AddedAt    = DateTime.UtcNow,
-            CreatedAt  = DateTime.UtcNow
+            FullName     = dto.FullName,
+            EntityType   = dto.EntityType,
+            Country      = dto.Country,
+            ListSourceId = dto.ListSourceId,  // int? FK
+            IsActive     = true,
+            AddedAt      = DateTime.UtcNow,
+            CreatedAt    = DateTime.UtcNow
         };
         await _unitOfWork.SanctionEntries.AddAsync(entry);
         await _unitOfWork.SaveChangesAsync();
@@ -100,24 +100,25 @@ public class SanctionEntryService : ISanctionEntryService
         await _cache.RemoveAsync(AllCacheKey);
     }
 
-    public async Task<IEnumerable<SanctionEntryDto>> SearchAsync(string query, string? listSource)
+    public async Task<IEnumerable<SanctionEntryDto>> SearchAsync(string query, int? sourceId)
     {
         // Arama sonuçları cache'lenmez — her sorgu farklı olabilir
         var entries = await _unitOfWork.SanctionEntries.SearchByNameAsync(query);
-        if (listSource is not null)
-            entries = entries.Where(e => e.ListSource == listSource);
+        if (sourceId is not null)
+            entries = entries.Where(e => e.ListSourceId == sourceId);
         return entries.Select(MapToDto);
     }
 
     private static SanctionEntryDto MapToDto(SanctionEntry e) => new()
     {
-        Id         = e.Id,
-        FullName   = e.FullName,
-        EntityType = e.EntityType,
-        Country    = e.Country,
-        ListSource = e.ListSource,
-        IsActive   = e.IsActive,
-        DateOfBirth = e.DateOfBirth,
-        CreatedAt  = e.CreatedAt
+        Id           = e.Id,
+        FullName     = e.FullName,
+        EntityType   = e.EntityType,
+        Country      = e.Country,
+        ListSourceId = e.ListSourceId,
+        SourceName   = e.ListSourceRef?.Name ?? string.Empty,
+        IsActive     = e.IsActive,
+        DateOfBirth  = e.DateOfBirth,
+        CreatedAt    = e.CreatedAt
     };
 }

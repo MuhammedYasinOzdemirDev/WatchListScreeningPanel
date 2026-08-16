@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using WatchListScreening.Application.DTOs;
 using WatchListScreening.Application.Interfaces.Services;
 
@@ -60,13 +60,13 @@ public class SanctionEntriesController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>İsme veya listeye göre arama yapar.</summary>
+    /// <summary>İsme veya kaynak ID'ye göre arama yapar.</summary>
     [HttpGet("search")]
     public async Task<IActionResult> Search(
         [FromQuery] string query,
-        [FromQuery] string? source = null)
+        [FromQuery] int? sourceId = null)
     {
-        var result = await _service.SearchAsync(query, source);
+        var result = await _service.SearchAsync(query, sourceId);
         return Ok(result);
     }
 }

@@ -37,11 +37,11 @@ public class ScreeningService : IScreeningService
         var request = new ScreeningRequest
         {
             SearchQuery = dto.SearchQuery,
-            SearchType = dto.SearchType,
+            SearchType  = dto.SearchType,
             RequestedBy = dto.RequestedBy,
-            RequestedAt = DateTime.UtcNow,
-            Status = ScreeningStatus.Processing,
-            CreatedAt = DateTime.UtcNow
+            // RequestedAt kaldırıldı — BaseEntity.CreatedAt kullanılıyor
+            Status      = ScreeningStatus.Processing,
+            CreatedAt   = DateTime.UtcNow
         };
         await _unitOfWork.ScreeningRequests.AddAsync(request);
         await _unitOfWork.SaveChangesAsync();
@@ -107,13 +107,13 @@ public class ScreeningService : IScreeningService
 
     private static ScreeningRequestDto MapToDto(ScreeningRequest request, List<ScreeningResult> results) => new()
     {
-        Id = request.Id,
-        SearchQuery = request.SearchQuery,
-        SearchType = request.SearchType,
-        RequestedBy = request.RequestedBy,
-        RequestedAt = request.RequestedAt,
-        CompletedAt = request.CompletedAt,
-        Status = request.Status,
+        Id           = request.Id,
+        SearchQuery  = request.SearchQuery,
+        SearchType   = request.SearchType,
+        RequestedBy  = request.RequestedBy,
+        RequestedAt  = request.CreatedAt,     // RequestedAt → CreatedAt'ten besleniyor
+        CompletedAt  = request.CompletedAt,
+        Status       = request.Status,
         TotalMatches = request.TotalMatches
     };
 }

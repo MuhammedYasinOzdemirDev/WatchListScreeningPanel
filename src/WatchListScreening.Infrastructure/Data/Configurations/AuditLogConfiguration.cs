@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WatchListScreening.Domain.Entities;
 
@@ -46,9 +46,7 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
             .IsRequired()
             .HasMaxLength(200);
 
-        // Date and time when the action occurred.
-        builder.Property(x => x.PerformedAt)
-            .IsRequired();
+        // PerformedAt kaldırıldı — BaseEntity.CreatedAt kullanılıyor
 
         // Previous values before the update.
         // Stored as JSON for audit purposes.
@@ -69,9 +67,7 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
         // INDEX CONFIGURATION
         // --------------------------------------------------------------------
 
-        // Used for date-based reporting and audit queries.
-        builder.HasIndex(x => x.PerformedAt)
-            .HasDatabaseName("IX_AuditLogs_PerformedAt");
+        // Date-based audit queries use CreatedAt index (defined in BaseEntity convention)
 
         // Used to filter logs by action type.
         builder.HasIndex(x => x.Action)

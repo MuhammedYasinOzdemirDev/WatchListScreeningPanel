@@ -19,9 +19,6 @@ public class UpdateSanctionEntryDto
     /// <summary>Opsiyonel — ulusal kimlik numarası güncellemesi.</summary>
     public string? NationalId { get; set; }
 
-    /// <summary>Opsiyonel — kaynak URL güncellemesi.</summary>
-    public string? ListSourceUrl { get; set; }
-
     /// <summary>
     /// Kaydı aktif/pasif yapmak için.
     /// True → aktif, False → soft delete (yaptırım kaldırıldı).

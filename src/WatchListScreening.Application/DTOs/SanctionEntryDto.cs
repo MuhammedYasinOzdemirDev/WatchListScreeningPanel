@@ -26,10 +26,16 @@ public class SanctionEntryDto
     public string? Country { get; set; }
 
     /// <summary>
-    /// Hangi listeden geldiği (OFAC, UN, EU, MASAK...).
-    /// Kullanıcı hangi listelerle tarama yaptığını bunu görerek anlar.
+    /// FK — kayıtlı ListSource tablosundaki kaynak ID'si.
+    /// Nullable: Faz 2 öncesi eklenen seed kayıtlarda yok.
     /// </summary>
-    public string ListSource { get; set; } = string.Empty;
+    public int? ListSourceId { get; set; }
+
+    /// <summary>
+    /// Hangi listeden geldiği — ListSource.Name navigation'dan.
+    /// Örnek: "OFAC SDN List", "UN Consolidated List"
+    /// </summary>
+    public string SourceName { get; set; } = string.Empty;
 
     /// <summary>
     /// Kayıt aktif mi?

@@ -22,17 +22,14 @@ public class CreateSanctionEntryDto
     public string? Country { get; set; }
 
     /// <summary>
-    /// Zorunlu — hangi yaptırım listesinden eklendiği.
-    /// Örnek: "OFAC", "UN", "EU", "MASAK"
+    /// Opsiyonel — hangi kayıtlı kaynaktan ekleneceği.
+    /// Faz 2 ile zorunlu hale gelecek, şu an nullable.
     /// </summary>
-    public string ListSource { get; set; } = string.Empty;
+    public int? ListSourceId { get; set; }
 
     /// <summary>Opsiyonel — doğum tarihi (kişiler için).</summary>
     public DateOnly? DateOfBirth { get; set; }
 
     /// <summary>Opsiyonel — ulusal kimlik numarası.</summary>
     public string? NationalId { get; set; }
-
-    /// <summary>Opsiyonel — kaynak liste URL'si.</summary>
-    public string? ListSourceUrl { get; set; }
 }

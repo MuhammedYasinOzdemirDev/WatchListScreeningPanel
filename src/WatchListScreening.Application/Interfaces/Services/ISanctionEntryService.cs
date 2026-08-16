@@ -1,4 +1,4 @@
-﻿
+
 using WatchListScreening.Application.DTOs;
 
 namespace WatchListScreening.Application.Interfaces.Services;
@@ -10,5 +10,5 @@ public interface ISanctionEntryService
     Task<SanctionEntryDto> CreateAsync(CreateSanctionEntryDto dto);
     Task UpdateAsync(int id, UpdateSanctionEntryDto dto);
     Task DeleteAsync(int id);
-    Task<IEnumerable<SanctionEntryDto>> SearchAsync(string query, string? listSource);
+    Task<IEnumerable<SanctionEntryDto>> SearchAsync(string query, int? sourceId);
 }

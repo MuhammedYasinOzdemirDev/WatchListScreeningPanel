@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WatchListScreening.Domain.Entities;
 
@@ -42,9 +42,7 @@ public class ScreeningRequestConfiguration : IEntityTypeConfiguration<ScreeningR
             .IsRequired()
             .HasMaxLength(200);
 
-        // Date and time when the screening request was created.
-        builder.Property(x => x.RequestedAt)
-            .IsRequired();
+        // RequestedAt kaldırıldı — BaseEntity.CreatedAt kullanılıyor
 
         // Completion time of the screening process.
         builder.Property(x => x.CompletedAt);
@@ -89,9 +87,7 @@ public class ScreeningRequestConfiguration : IEntityTypeConfiguration<ScreeningR
         builder.HasIndex(x => x.Status)
             .HasDatabaseName("IX_ScreeningRequests_Status");
 
-        // Used for reporting and date-based filtering.
-        builder.HasIndex(x => x.RequestedAt)
-            .HasDatabaseName("IX_ScreeningRequests_RequestedAt");
+        // Date-based filtering uses CreatedAt (BaseEntity convention)
 
         // Used to display a user's screening history.
         builder.HasIndex(x => x.RequestedBy)

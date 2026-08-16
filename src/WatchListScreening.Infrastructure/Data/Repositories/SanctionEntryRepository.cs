@@ -1,5 +1,3 @@
-﻿
-
 using WatchListScreening.Application.Interfaces.Repositories;
 using WatchListScreening.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +10,12 @@ public class SanctionEntryRepository(AppDbContext context) : Repository<Sanction
         => await _dbSet
             .Where(x => x.IsActive && x.FullName.Contains(query))
             .ToListAsync();
-    public async Task<IEnumerable<SanctionEntry>> GetByListSourceAsync(string listSource)
+
+    /// <summary>
+    /// Artık ListSource string yerine ListSourceId (FK) ile filtreleme yapılıyor.
+    /// </summary>
+    public async Task<IEnumerable<SanctionEntry>> GetByListSourceAsync(int? sourceId)
         => await _dbSet
-            .Where(x => x.IsActive && x.ListSource == listSource)
+            .Where(x => x.IsActive && x.ListSourceId == sourceId)
             .ToListAsync();
 }

@@ -59,4 +59,3 @@ public class ListSource : BaseEntity
     public ICollection<HarvestedEntry> HarvestedEntries { get; set; } = new List<HarvestedEntry>();
     public ICollection<SanctionEntry> SanctionEntries { get; set; } = new List<SanctionEntry>();
 }
-s

@@ -56,7 +56,7 @@ public class ScreeningResultService : IScreeningResultService
         var stats = new DashboardStatsDto
         {
             TotalSanctionEntries = _unitOfWork.SanctionEntries.Query().Count(e => e.IsActive),
-            TodayScreenings      = _unitOfWork.ScreeningRequests.Query().Count(r => r.RequestedAt >= today),
+            TodayScreenings      = _unitOfWork.ScreeningRequests.Query().Count(r => r.CreatedAt >= today),
             PendingReviews       = _unitOfWork.ScreeningResults.Query().Count(r => r.ReviewStatus == ReviewStatus.Pending),
             HighRiskMatches      = _unitOfWork.ScreeningResults.Query().Count(r =>
                                         r.ReviewStatus == ReviewStatus.Pending &&
@@ -74,7 +74,7 @@ public class ScreeningResultService : IScreeningResultService
         Id                 = r.Id,
         ScreeningRequestId = r.ScreeningRequestId,
         MatchedFullName    = r.SanctionEntry?.FullName ?? string.Empty,
-        MatchedListSource  = r.SanctionEntry?.ListSource ?? string.Empty,
+        MatchedListSource  = r.SanctionEntry?.ListSourceRef?.Name ?? string.Empty,
         MatchScore         = r.MatchScore,
         MatchedType        = r.MatchedType,
         RiskLevel          = r.RiskLevel,
