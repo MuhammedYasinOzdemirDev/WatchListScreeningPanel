@@ -9,8 +9,10 @@ internal class UnitOfWork : IUnitOfWork
     public ISanctionEntryRepository SanctionEntries { get; }
     public IRepository<ScreeningRequest> ScreeningRequests { get; }
     public IScreeningResultRepository ScreeningResults { get; }
-
     public IRepository<AuditLog> AuditLogs { get; }
+    public IRepository<ListSource> ListSources { get; }
+    public IRepository<ListSourceRun> ListSourceRuns { get; }
+    public IRepository<HarvestedEntry> HarvestedEntries { get; }
 
 
     public UnitOfWork(AppDbContext context)
@@ -20,6 +22,9 @@ internal class UnitOfWork : IUnitOfWork
         ScreeningRequests = new Repository<ScreeningRequest>(context);
         ScreeningResults = new ScreeningResultRepository(context);
         AuditLogs = new Repository<AuditLog>(context);
+        ListSources = new Repository<ListSource>(context);
+        ListSourceRuns = new Repository<ListSourceRun>(context);
+        HarvestedEntries = new Repository<HarvestedEntry>(context);
     }
     public async Task<int> SaveChangesAsync()
         => await _context.SaveChangesAsync();

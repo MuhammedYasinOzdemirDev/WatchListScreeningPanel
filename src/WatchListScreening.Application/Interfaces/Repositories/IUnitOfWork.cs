@@ -9,5 +9,10 @@ public interface IUnitOfWork: IDisposable
     IScreeningResultRepository ScreeningResults { get; }
 
     IRepository<AuditLog> AuditLogs { get; }
+
+    public IRepository<ListSource> ListSources { get; }
+    public IRepository<ListSourceRun> ListSourceRuns { get; }
+    public IRepository<HarvestedEntry> HarvestedEntries { get; }
+
     Task<int> SaveChangesAsync();
 }
