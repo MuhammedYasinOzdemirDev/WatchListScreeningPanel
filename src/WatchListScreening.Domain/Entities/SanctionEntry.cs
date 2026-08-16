@@ -48,16 +48,12 @@ public class SanctionEntry:BaseEntity
     /// National identification number.
     /// </summary>
     public string? NationalId { get; set; }
-
-    /// <summary>
-    /// Source list (OFAC, UN, EU, MASAK...).
-    /// </summary>
-    public string ListSource { get; set; } = null!;
-
-    /// <summary>
-    /// Official source URL.
-    /// </summary>
-    public string? ListSourceUrl { get; set; }
+    
+    /// <summary>FK — which registered source this entry came from.</summary>
+    public int? ListSourceId { get; set; }
+    
+    /// <summary>Navigation — named ListSourceRef to avoid conflict with old ListSource string field removed above.</summary>
+    public ListSource? ListSourceRef { get; set; }
 
     /// <summary>
     /// Aliases stored as JSON.
@@ -88,4 +84,6 @@ public class SanctionEntry:BaseEntity
     /// Screening results associated with this sanction record.
     /// </summary>
     public ICollection<ScreeningResult> ScreeningResults { get; set; } = new List<ScreeningResult>();
+
+    public ICollection<HarvestedEntry> HarvestedEntries { get; set; } = new List<HarvestedEntry>();
 }
