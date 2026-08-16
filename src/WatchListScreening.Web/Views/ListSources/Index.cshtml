@@ -1,0 +1,123 @@
+@model IEnumerable<WatchListScreening.Domain.Entities.ListSource>
+
+@{
+    ViewData["Title"] = "Kaynak Yönetimi (List Sources)";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="color: #2c3e50;">Veri Kaynakları</h2>
+            <p class="text-muted mb-0">OFAC, MASAK, HMT gibi tarama listelerini buradan yönetebilirsiniz.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary btn-lg shadow-sm" style="border-radius: 10px;">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Kaynak Ekle
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="background: white;">
+                    <thead style="background: #f8f9fa;">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kaynak Adı</th>
+                            <th class="py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kategori / Tip</th>
+                            <th class="py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Zamanlayıcı (Cron)</th>
+                            <th class="py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Durum</th>
+                            <th class="py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Son Çalışma</th>
+                            <th class="py-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-end pe-4">Aksiyonlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm fw-bold">@item.Name</h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <a href="@item.Url" target="_blank" class="text-decoration-none" title="@item.Url">
+                                                        @(item.Url.Length > 30 ? item.Url.Substring(0, 30) + "..." : item.Url)
+                                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">@item.Category</p>
+                                        <p class="text-xs text-secondary mb-0">@item.ScraperType</p>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark font-monospace border">
+                                            @(string.IsNullOrEmpty(item.CronExpression) ? "Yok" : item.CronExpression)
+                                        </span>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success" style="border-radius: 8px;">Aktif</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary" style="border-radius: 8px;">Pasif</span>
+                                        }
+                                    </td>
+                                    <td class="align-middle">
+                                        <span class="text-secondary text-xs font-weight-bold">
+                                            @(item.LastHarvestAt?.ToString("dd.MM.yyyy HH:mm") ?? "Hiç Çalışmadı")
+                                        </span><br/>
+                                        @if(item.LastHarvestStatus != null) {
+                                            <small class="text-muted">Durum: @item.LastHarvestStatus</small>
+                                        }
+                                    </td>
+                                    <td class="align-middle text-end pe-4">
+                                        <form asp-action="TriggerHarvest" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Şimdi Tarat">
+                                                <i class="bi bi-play-circle-fill"></i> Tetikle
+                                            </button>
+                                        </form>
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu kaynağı silmek istediğinize emin misiniz?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger ms-2" title="Sil">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                                    Hiçbir veri kaynağı bulunamadı. Lütfen yeni bir tane ekleyin.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

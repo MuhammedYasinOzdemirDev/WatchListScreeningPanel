@@ -1,0 +1,99 @@
+@model WatchListScreening.Domain.Entities.ListSource
+@using WatchListScreening.Domain.Enums
+
+@{
+    ViewData["Title"] = "Yeni Kaynak Ekle";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" style="color: #2c3e50;">Yeni Kaynak Kaydı</h2>
+            <p class="text-muted mb-0">ListHarvester (Faz 2) motoru için yeni bir tarama kaynağı tanımlayın.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left me-2"></i>Geri Dön
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0" style="border-radius: 12px;">
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                <div class="row g-4">
+                    <!-- Temel Bilgiler -->
+                    <div class="col-md-6">
+                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-info-circle me-2"></i>Temel Bilgiler</h5>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold">Kaynak Adı</label>
+                            <input asp-for="Name" class="form-control" placeholder="Örn: OFAC SDN List" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Url" class="form-label fw-semibold">Hedef URL</label>
+                            <input asp-for="Url" class="form-control" type="url" placeholder="https://..." required />
+                            <span asp-validation-for="Url" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="Category" class="form-label fw-semibold">Kategori</label>
+                                <select asp-for="Category" class="form-select" asp-items="Html.GetEnumSelectList<SourceCategory>()"></select>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="ScraperType" class="form-label fw-semibold">Tarama Tipi</label>
+                                <select asp-for="ScraperType" class="form-select" asp-items="Html.GetEnumSelectList<ScraperType>()"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teknik Ayarlar -->
+                    <div class="col-md-6">
+                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-gear-fill me-2"></i>Teknik Ayarlar</h5>
+
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="ScraperClassName" class="form-label fw-semibold">Scraper Class Adı</label>
+                                <input asp-for="ScraperClassName" class="form-control" placeholder="Örn: OfacScraper" />
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="CronExpression" class="form-label fw-semibold">Zamanlayıcı (Cron)</label>
+                                <input asp-for="CronExpression" class="form-control" placeholder="0 */6 * * *" />
+                                <div class="form-text">Örn: 0 */6 * * * (6 Saatte Bir)</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ScraperConfig" class="form-label fw-semibold">Scraper Konfigürasyonu (JSON)</label>
+                            <textarea asp-for="ScraperConfig" class="form-control text-monospace" rows="4" placeholder="{ 'selectors': { 'row': 'tr' } }" style="font-family: monospace;"></textarea>
+                            <div class="form-text">Dinamik tarayıcılar için CSS seçicileri ve kuralları içerir.</div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-4 mt-4">
+                            <div class="form-check form-switch fs-5">
+                                <input class="form-check-input" type="checkbox" asp-for="IsActive" checked>
+                                <label class="form-check-label ms-2 fs-6" asp-for="IsActive">Aktif (Taramalara Dahil Et)</label>
+                            </div>
+                            
+                            <div class="form-check form-switch fs-5">
+                                <input class="form-check-input" type="checkbox" asp-for="HasScraperImpl" checked>
+                                <label class="form-check-label ms-2 fs-6" asp-for="HasScraperImpl">Özel C# İmplementasyonu Var</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+                
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btn-lg px-5" style="border-radius: 8px;">
+                        <i class="bi bi-save me-2"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

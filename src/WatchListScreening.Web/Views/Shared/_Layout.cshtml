@@ -16,6 +16,9 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     
@@ -40,19 +43,10 @@
                         <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item mt-3 mb-1 px-3 text-muted text-uppercase text-xs fw-bold">Faz 2 - Harvester</li>
                 <li class="nav-item">
-                    <a href="@Url.Action("Index", "Screening")" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Screening" ? "active" : "")">
-                        <i class="fa-solid fa-magnifying-glass"></i> <span>Tarama (Screening)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("Results", "Screening")" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Results" ? "active" : "")">
-                        <i class="fa-solid fa-list-check"></i> <span>İncelemeler (Pending)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("Index", "Sanction")" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Sanction" ? "active" : "")">
-                        <i class="fa-solid fa-database"></i> <span>Yaptırım Listesi</span>
+                    <a href="@Url.Action("Index", "ListSources")" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "ListSources" ? "active" : "")">
+                        <i class="bi bi-cloud-arrow-down-fill me-1"></i> <span>Kaynak Yönetimi</span>
                     </a>
                 </li>
             </ul>
