@@ -13,7 +13,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ScreeningRequest> ScreeningRequests => Set<ScreeningRequest>();
     public DbSet<ScreeningResult> ScreeningResults => Set<ScreeningResult>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
-
+    public DbSet<ListSource> ListSources => Set<ListSource>();
+    public DbSet<ListSourceRun> ListSourceRuns => Set<ListSourceRun>();
+    public DbSet<HarvestedEntry> HarvestedEntries => Set<HarvestedEntry>();
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
