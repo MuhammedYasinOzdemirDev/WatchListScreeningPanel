@@ -131,7 +131,8 @@
 
 ### 3.6 API Altyapısı
 - [ ] `ExceptionHandlingMiddleware` — global hata yönetimi
-- [ ] Swagger/OpenAPI konfigürasyonu
+- [ ] **Swagger UI kurulumu** — `Swashbuckle.AspNetCore` paketi + UI arayüzü (OpenAPI JSON spec var, UI eksik)
+- [ ] Swagger/OpenAPI konfigürasyonu (XML comments ile endpoint açıklamaları)
 - [ ] Serilog konfigürasyonu
 - [ ] CORS ayarları (MVC panelden erişim için)
 

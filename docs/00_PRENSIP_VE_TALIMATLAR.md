@@ -95,8 +95,9 @@ Bu proje bir **iş başvurusu sınavına hazırlık** değil, bir **pekiştirme 
 | Faz | İçerik | Durum |
 |---|---|---|
 | **Faz 1** | PostgreSQL + tüm modüller + Docker | 🔄 Aktif |
-| **Faz 2** | SQL Server'a migration, MassTransit, Polly, test coverage | 📋 Planlanmış |
-| **Faz 3+** | Kafka, microservice ayrımı, Kubernetes, CI/CD | 💡 Gelecek |
+| **Faz 2** | Otomatik Liste Toplama (List Harvester): Web scraping, Hangfire, RabbitMQ | 📋 Planlanmış |
+| **Faz 3** | SQL Server migration, MassTransit, Polly, test coverage | 📋 Planlanmış |
+| **Faz 4+** | Kafka, microservice ayrımı, Kubernetes, CI/CD | 💡 Gelecek |
 
 ---
 
