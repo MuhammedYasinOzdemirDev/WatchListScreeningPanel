@@ -58,16 +58,14 @@ public class SanctionEntryConfiguration : IEntityTypeConfiguration<SanctionEntry
         // Used when exact identity verification is required.
         builder.Property(x => x.NationalId)
             .HasMaxLength(50);
+    
+        // FK to ListSources table — nullable for backward compat with existing seed data
+        builder.Property(x => x.ListSourceId);
+        builder.HasOne(x => x.ListSourceRef)
+                    .WithMany(x => x.SanctionEntries)
+                    .HasForeignKey(x => x.ListSourceId)
+                    .OnDelete(DeleteBehavior.SetNull);
 
-        // Source sanction list.
-        // Examples: OFAC, UN, EU, MASAK...
-        builder.Property(x => x.ListSource)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        // Official source URL.
-        builder.Property(x => x.ListSourceUrl)
-            .HasMaxLength(1000);
 
         // JSON array containing aliases.
         builder.Property(x => x.Aliases);
@@ -103,10 +101,6 @@ public class SanctionEntryConfiguration : IEntityTypeConfiguration<SanctionEntry
         builder.HasIndex(x => x.FullName)
             .HasDatabaseName("IX_SanctionEntries_FullName");
 
-        // Used when filtering records by sanction source.
-        builder.HasIndex(x => x.ListSource)
-            .HasDatabaseName("IX_SanctionEntries_ListSource");
-
         // Frequently used to retrieve only active sanctions.
         builder.HasIndex(x => x.IsActive)
             .HasDatabaseName("IX_SanctionEntries_IsActive");
@@ -114,5 +108,9 @@ public class SanctionEntryConfiguration : IEntityTypeConfiguration<SanctionEntry
         // Used for country-based screening.
         builder.HasIndex(x => x.Country)
             .HasDatabaseName("IX_SanctionEntries_Country");
+
+        builder.HasIndex(x => x.ListSourceId)
+           .HasDatabaseName("IX_SanctionEntries_ListSourceId");
+
     }
 }
