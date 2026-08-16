@@ -1,4 +1,4 @@
-﻿using WatchListScreening.Domain.Entities;
+using WatchListScreening.Domain.Entities;
 
 namespace WatchListScreening.Application.Interfaces.Repositories;
 
@@ -10,9 +10,10 @@ public interface IUnitOfWork: IDisposable
 
     IRepository<AuditLog> AuditLogs { get; }
 
-    public IRepository<ListSource> ListSources { get; }
-    public IRepository<ListSourceRun> ListSourceRuns { get; }
-    public IRepository<HarvestedEntry> HarvestedEntries { get; }
+    IRepository<ListSourceRun> ListSourceRuns { get; }
+    IListSourceRepository ListSources { get; }
+    IHarvestedEntryRepository HarvestedEntries { get; }
+
 
     Task<int> SaveChangesAsync();
 }

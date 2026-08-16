@@ -1,21 +1,21 @@
-ï»¿using WatchListScreening.Application.DTOs;
+using WatchListScreening.Application.DTOs;
 
 namespace WatchListScreening.Application.Interfaces.Services;
 
 /// <summary>
-/// YaptÄ±rÄ±m listesi tarama operasyonlarÄ±nÄ±n sÃ¶zleÅŸmesi.
-/// Controller buraya baÄŸÄ±mlÄ± olur, implementasyonu bilmez.
+/// Yaptırım listesi tarama operasyonlarının sözleşmesi.
+/// Controller buraya bağımlı olur, implementasyonu bilmez.
 /// </summary>
 public interface IScreeningService
 {
     /// <summary>
-    /// Tek bir isim iÃ§in tarama baÅŸlatÄ±r, sonuÃ§larÄ± dÃ¶ner.
-    /// Senkron Ã§alÄ±ÅŸÄ±r â€” kÃ¼Ã§Ã¼k taramalar iÃ§in.
+    /// Tek bir isim için tarama başlatır, sonuçları döner.
+    /// Senkron çalışır — küçük taramalar için.
     /// </summary>
     Task<ScreeningRequestDto> ScreenAsync(CreateScreeningRequestDto dto);
 
     /// <summary>
-    /// Tarama isteÄŸini ID ile getirir (geÃ§miÅŸ sorgusu iÃ§in).
+    /// Tarama isteğini ID ile getirir (geçmiş sorgusu için).
     /// </summary>
     Task<ScreeningRequestDto?> GetByIdAsync(int id);
 }

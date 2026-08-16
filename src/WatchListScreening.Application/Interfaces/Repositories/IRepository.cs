@@ -1,4 +1,4 @@
-﻿
+
 using WatchListScreening.Domain.Common;
 
 namespace WatchListScreening.Application.Interfaces.Repositories;

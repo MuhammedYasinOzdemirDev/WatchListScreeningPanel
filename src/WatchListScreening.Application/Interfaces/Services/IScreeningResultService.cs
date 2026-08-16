@@ -1,15 +1,15 @@
-ï»¿using WatchListScreening.Application.DTOs;
+using WatchListScreening.Application.DTOs;
 
 namespace WatchListScreening.Application.Interfaces.Services;
 
 public interface IScreeningResultService
 {
-    /// <summary>ReviewStatus = Pending olan tÃ¼m sonuÃ§lar â€” compliance uzmanÄ±nÄ±n iÅŸ listesi.</summary>
+    /// <summary>ReviewStatus = Pending olan tüm sonuçlar — compliance uzmanýnýn iþ listesi.</summary>
     Task<IEnumerable<ScreeningResultDto>> GetPendingAsync();
 
     /// <summary>Bir sonucu incele: Approved, Confirmed veya Escalated yap.</summary>
     Task ReviewAsync(int id, UpdateReviewDto dto);
 
-    /// <summary>Dashboard iÃ§in Ã¶zet istatistikler.</summary>
+    /// <summary>Dashboard için özet istatistikler.</summary>
     Task<DashboardStatsDto> GetStatsAsync();
 }
