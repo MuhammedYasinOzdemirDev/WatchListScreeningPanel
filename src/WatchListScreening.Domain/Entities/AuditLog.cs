@@ -29,11 +29,6 @@ public class AuditLog:BaseEntity
     public string PerformedBy { get; set; } = null!;
 
     /// <summary>
-    /// Action timestamp.
-    /// </summary>
-    public DateTime PerformedAt { get; set; }
-
-    /// <summary>
     /// Previous values in JSON format.
     /// </summary>
     public string? OldValues { get; set; }

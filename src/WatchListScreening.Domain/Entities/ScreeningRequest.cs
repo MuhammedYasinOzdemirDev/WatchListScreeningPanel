@@ -25,11 +25,6 @@ public class ScreeningRequest:BaseEntity
     public string RequestedBy { get; set; } = null!;
 
     /// <summary>
-    /// Request timestamp.
-    /// </summary>
-    public DateTime RequestedAt { get; set; }
-
-    /// <summary>
     /// Completion timestamp.
     /// </summary>
     public DateTime? CompletedAt { get; set; }
