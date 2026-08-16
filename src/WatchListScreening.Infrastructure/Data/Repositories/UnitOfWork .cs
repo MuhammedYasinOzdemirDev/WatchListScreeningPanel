@@ -1,4 +1,4 @@
-﻿using WatchListScreening.Application.Interfaces.Repositories;
+using WatchListScreening.Application.Interfaces.Repositories;
 using WatchListScreening.Domain.Entities;
 
 namespace WatchListScreening.Infrastructure.Data.Repositories;
@@ -10,9 +10,9 @@ internal class UnitOfWork : IUnitOfWork
     public IRepository<ScreeningRequest> ScreeningRequests { get; }
     public IScreeningResultRepository ScreeningResults { get; }
     public IRepository<AuditLog> AuditLogs { get; }
-    public IRepository<ListSource> ListSources { get; }
+    public IListSourceRepository ListSources { get; }
     public IRepository<ListSourceRun> ListSourceRuns { get; }
-    public IRepository<HarvestedEntry> HarvestedEntries { get; }
+    public IHarvestedEntryRepository HarvestedEntries { get; }
 
 
     public UnitOfWork(AppDbContext context)
@@ -22,9 +22,9 @@ internal class UnitOfWork : IUnitOfWork
         ScreeningRequests = new Repository<ScreeningRequest>(context);
         ScreeningResults = new ScreeningResultRepository(context);
         AuditLogs = new Repository<AuditLog>(context);
-        ListSources = new Repository<ListSource>(context);
+        ListSources = new ListSourceRepository(context);
         ListSourceRuns = new Repository<ListSourceRun>(context);
-        HarvestedEntries = new Repository<HarvestedEntry>(context);
+        HarvestedEntries = new HarvestedEntryRepository(context);
     }
     public async Task<int> SaveChangesAsync()
         => await _context.SaveChangesAsync();
