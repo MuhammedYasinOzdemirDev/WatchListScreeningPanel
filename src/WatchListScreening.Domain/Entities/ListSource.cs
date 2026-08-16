@@ -1,4 +1,4 @@
-﻿using WatchListScreening.Domain.Common;
+using WatchListScreening.Domain.Common;
 using WatchListScreening.Domain.Enums;
 
 namespace WatchListScreening.Domain.Entities;
@@ -27,6 +27,9 @@ public class ListSource : BaseEntity
     /// </summary>
     public string? ScraperConfig { get; set; }
 
+    /// <summary>Name of the scraper class to use (e.g. "OfacScraper"). Used to resolve the correct strategy from DI.</summary>
+    public string? ScraperClassName { get; set; }
+
     /// <summary>Cron expression for scheduled harvesting. e.g. "0 */6 * * *"</summary>
     public string? CronExpression { get; set; }
 
@@ -50,6 +53,12 @@ public class ListSource : BaseEntity
 
     /// <summary>Timestamp of the last successful harvest.</summary>
     public DateTime? LastHarvestAt { get; set; }
+
+    /// <summary>Status of the last harvest.</summary>
+    public HarvestStatus? LastHarvestStatus { get; set; }
+
+    /// <summary>Total records inserted into database from this source.</summary>
+    public int TotalRecordsHarvested { get; set; }
 
     /// <summary>Optional description or notes about the source.</summary>
     public string? Notes { get; set; }

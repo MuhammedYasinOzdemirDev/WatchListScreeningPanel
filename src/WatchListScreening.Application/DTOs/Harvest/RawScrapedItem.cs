@@ -1,21 +1,17 @@
-namespace WatchListScreening.Application.DTOs;
+namespace WatchListScreening.Application.DTOs.Harvest;
 
-/// <summary>
-/// Raw data as scraped from the source — no cleaning applied yet.
-/// All fields string because source data is unpredictable.
-/// </summary>
 public class RawScrapedItem
 {
     public string RawFullName { get; set; } = string.Empty;
+    public string? Country { get; set; }
+    public string? DateOfBirth { get; set; }
+    public string? NationalId { get; set; }
     public string? RawFirstName { get; set; }
     public string? RawLastName { get; set; }
-    public string? RawCountry { get; set; }
-    public string? RawDateOfBirth { get; set; }
-    public string? RawNationalId { get; set; }
-
-    /// <summary>JSON array string — aliases as scraped.</summary>
-    public string? RawAliases { get; set; }
-
-    /// <summary>Any extra source-specific fields in key-value pairs.</summary>
-    public Dictionary<string, string> ExtraFields { get; set; } = new();
+    public string? CleanedFullName { get; set; }
+    public string? CleanedFirstName { get; set; }
+    public string? CleanedLastName { get; set; }
+    public string? ContentHash { get; set; }
+    public string? EntityTypeStr { get; set; }
+    public string? AdditionalData { get; set; }
 }

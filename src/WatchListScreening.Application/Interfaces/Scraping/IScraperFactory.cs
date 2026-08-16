@@ -1,12 +1,12 @@
-using WatchListScreening.Domain.Enums;
+using WatchListScreening.Application.DTOs.Harvest;
 
 namespace WatchListScreening.Application.Interfaces.Scraping;
 
-/// <summary>
-/// Factory that resolves the correct ISourceScraper based on ScraperType enum.
-/// Implementation lives in Infrastructure/Scraper project.
-/// </summary>
 public interface IScraperFactory
 {
-    ISourceScraper Create(ScraperType scraperType);
+    /// <summary>
+    /// Resolves the correct scraper implementation based on the command.
+    /// Uses Reflection on ScraperClassName to find the correct instance.
+    /// </summary>
+    ISourceScraper Create(HarvestCommandDto command);
 }

@@ -1,5 +1,5 @@
-﻿using WatchListScreening.Domain.Common;
-
+using WatchListScreening.Domain.Common;
+using WatchListScreening.Domain.Enums;
 namespace WatchListScreening.Domain.Entities;
 
 /// <summary>
@@ -25,6 +25,8 @@ public class HarvestedEntry : BaseEntity
     public string CleanedFullName { get; set; } = null!;
     public string? CleanedFirstName { get; set; }
     public string? CleanedLastName { get; set; }
+    public EntityType? EntityType { get; set; }
+    public SourceCategory? Category { get; set; }
 
     // --- Structured fields (nullable, from source if available) ---
     /// <summary>Stored as string intentionally (format varies per source). SanctionEntry.DateOfBirth is DateOnly.</summary>

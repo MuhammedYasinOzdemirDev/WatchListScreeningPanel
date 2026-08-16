@@ -1,12 +1,9 @@
-using WatchListScreening.Application.DTOs;
+using WatchListScreening.Application.DTOs.Harvest;
 
 namespace WatchListScreening.Application.Interfaces.Scraping;
 
-/// <summary>
-/// Orchestrates the cleaning pipeline for raw scraped items.
-/// Pipeline: TrimWhitespace › NormalizeUnicode › RemoveSpecialChars › TitleCase
-/// </summary>
 public interface IDataCleaner
 {
-    CleanedItem Clean(RawScrapedItem raw);
+    CleanedItem Process(RawScrapedItem rawItem);
+    List<CleanedItem> ProcessBatch(List<RawScrapedItem> rawItems);
 }

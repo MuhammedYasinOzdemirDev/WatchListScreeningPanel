@@ -1,23 +1,15 @@
-namespace WatchListScreening.Application.DTOs;
+using WatchListScreening.Domain.Enums;
 
-/// <summary>
-/// Normalized and cleaned version of RawScrapedItem.
-/// Ready to be compared via ContentHash and stored in HarvestedEntries.
-/// </summary>
+namespace WatchListScreening.Application.DTOs.Harvest;
+
 public class CleanedItem
 {
+    public string RawFullName { get; set; } = string.Empty;
     public string CleanedFullName { get; set; } = string.Empty;
+    public string? Country { get; set; }
+    public EntityType? EntityType { get; set; }
+    public string ContentHash { get; set; } = string.Empty;
+    public string? DateOfBirth { get; set; }
     public string? CleanedFirstName { get; set; }
     public string? CleanedLastName { get; set; }
-    public string? Country { get; set; }
-    public string? DateOfBirth { get; set; }
-    public string? NationalId { get; set; }
-    public string? AliasesJson { get; set; }
-    public string? AdditionalDataJson { get; set; }
-
-    /// <summary>
-    /// SHA256 of (CleanedFullName + ListSourceId + DateOfBirth + NationalId).
-    /// Used for deduplication in HarvestedEntries.
-    /// </summary>
-    public string ContentHash { get; set; } = string.Empty;
 }

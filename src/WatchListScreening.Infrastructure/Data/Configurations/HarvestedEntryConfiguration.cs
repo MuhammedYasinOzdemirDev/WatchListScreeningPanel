@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WatchListScreening.Domain.Entities;
 
@@ -18,6 +18,8 @@ public class HarvestedEntryConfiguration : IEntityTypeConfiguration<HarvestedEnt
         builder.Property(x => x.CleanedFullName).IsRequired().HasMaxLength(500);
         builder.Property(x => x.CleanedFirstName).HasMaxLength(250);
         builder.Property(x => x.CleanedLastName).HasMaxLength(250);
+        builder.Property(x => x.EntityType);
+        builder.Property(x => x.Category);
         builder.Property(x => x.DateOfBirth).HasMaxLength(50);
         builder.Property(x => x.NationalId).HasMaxLength(100);
         builder.Property(x => x.Country).HasMaxLength(100);

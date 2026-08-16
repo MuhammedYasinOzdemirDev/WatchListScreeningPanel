@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WatchListScreening.Domain.Entities;
 
@@ -16,6 +16,7 @@ public class ListSourceConfiguration : IEntityTypeConfiguration<ListSource>
         builder.Property(x => x.Category).IsRequired();
         builder.Property(x => x.ScraperType).IsRequired();
         builder.Property(x => x.ScraperConfig);
+        builder.Property(x => x.ScraperClassName).HasMaxLength(200);
         builder.Property(x => x.CronExpression).HasMaxLength(100);
         builder.Property(x => x.HangfireJobId).HasMaxLength(200);
         builder.Property(x => x.TimeoutSeconds).HasDefaultValue(120);
